@@ -2,6 +2,9 @@ package riak
 
 import (
     "errors"
+)
+
+import (
     "github.com/ivaxer/riak-go-client/riak_pb"
 )
 
