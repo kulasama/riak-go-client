@@ -1,7 +1,7 @@
 package riak
 
 import (
-    "riak/riak_pb"
+    "github.com/ivaxer/riak-go-client/riak_pb"
 )
 
 type Object struct {
