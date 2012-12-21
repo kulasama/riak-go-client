@@ -93,12 +93,14 @@ func (conn *connection) recvMessage(msg proto.Message) (err error) {
 
     msgbuf := make([]byte, length - 1)
 
-    if length - 1 != 0 {
-        _, err = conn.tcp_conn.Read(msgbuf)
-        if err != nil {
-            debugf("conn.recvMessage(): read msg error: %v", err)
-            return
-        }
+    if len(msgbuf) == 0 {
+        return
+    }
+
+    _, err = conn.tcp_conn.Read(msgbuf)
+    if err != nil {
+        debugf("conn.recvMessage(): read msg error: %v", err)
+        return
     }
 
     if msgcode == messageCodes["RpbErrorResp"] {
