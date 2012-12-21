@@ -6,7 +6,7 @@ import (
 )
 
 func setupClient() *Client {
-    return New("127.0.0.1:8081")
+    return New("127.0.0.1:8087")
 }
 
 func TestGetUnknownKey(t *testing.T) {
