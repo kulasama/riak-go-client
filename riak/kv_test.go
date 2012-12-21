@@ -34,7 +34,9 @@ func TestPutGetKey(t *testing.T) {
 
     obj.Data = []byte("Hello World!")
     obj.ContentType = "text/plain"
-    obj.Store()
+    if err = obj.Store(); err != nil {
+        t.Fatalf("Unexpected error: %v", err)
+    }
 
     obj2, err := bucket.Get("new_key")
     if err != nil {
@@ -47,5 +49,39 @@ func TestPutGetKey(t *testing.T) {
 
     if obj.ContentType != obj2.ContentType {
         t.Fatalf("Expected equal ContentType")   
+    }
+}
+
+func TestExists(t *testing.T) {
+    client := setupClient(t)
+    bucket := client.Bucket("bname")
+
+    exists, err := bucket.Exists("unknown_key")
+    if err != nil {
+        t.Fatalf("Unexpected error: %v", err)
+    }
+
+    if exists {
+        t.Fatalf("Unexpected 'unknown_key' existing")
+    }
+
+    obj, err := bucket.New("known_key")
+    if err != nil {
+        t.Fatalf("Unexpected error: %v", err)
+    }
+
+    obj.Data = make([]byte, 1)
+
+    if err = obj.Store(); err != nil {
+        t.Fatalf("Unexpected error: %v", err)
+    }
+
+    exists, err = bucket.Exists("known_key")
+    if err != nil {
+        t.Fatalf("Unexpected error: %v", err)
+    }
+
+    if !exists {
+        t.Fatalf("Expected 'known_key' existing")
     }
 }
