@@ -1,6 +1,7 @@
 package riak
 
 import (
+    "errors"
     "github.com/ivaxer/riak-go-client/riak_pb"
 )
 
@@ -20,6 +21,10 @@ func (obj *Object) Store() (err error) {
 func (obj *Object) put() (err error) {
     bucket := obj.bucket
     client := bucket.client
+
+    if len(obj.Data) == 0 {
+        return errors.New("riakpbc: empty Object.Data")
+    }
 
     req := &riak_pb.RpbPutReq{Bucket: []byte(bucket.Name), Key: []byte(obj.Key), Vclock: obj.vclock}
     req.Content = &riak_pb.RpbContent{Value: obj.Data, ContentType: []byte(obj.ContentType)}
