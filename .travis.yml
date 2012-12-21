@@ -1,5 +1,3 @@
 language: go
 services:
  - riak
-install: cd riak && go get -d -v && go build -v
-script: cd riak && go test -v
