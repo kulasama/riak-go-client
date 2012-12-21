@@ -6,7 +6,7 @@ import (
 )
 
 func TestGetUnknownKey(t *testing.T) {
-    client := New("127.0.0.1:8081")
+    client := New("127.0.0.1:8087")
     bucket := client.Bucket("bname")
 
     _, err := bucket.Get("unknown_key")
