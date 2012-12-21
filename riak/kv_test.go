@@ -95,3 +95,29 @@ func TestExists(t *testing.T) {
         t.Fatalf("Expected 'known_key' existing")
     }
 }
+
+func TestPutGetBigObject(t *testing.T) {
+    client := setupClient(t)
+    bucket := client.Bucket("bname")
+
+    buf := make([]byte, 10 * 1024 * 1024)
+    for i, _ := range buf {
+        buf[i] = byte(i)
+    }
+
+    obj, err := bucket.New("big_object")
+    if err != nil {
+        t.Fatalf("Unexpected error: %v", err)
+    }
+    obj.Data = buf
+    obj.Store()
+
+    obj, err = bucket.Get("big_object")
+    if err != nil {
+        t.Fatalf("Unexpected error: %v", err)
+    }
+
+    if !bytes.Equal(obj.Data, buf) {
+        t.Fatal()
+    }
+}

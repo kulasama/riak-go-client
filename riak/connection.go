@@ -73,6 +73,21 @@ func (conn *connection) sendMessage(name string, msg proto.Message) (err error) 
     return
 }
 
+func (conn *connection) read(buf []byte) (err error) {
+    have := 0
+
+    for have != len(buf) {
+        read, err := conn.tcp_conn.Read(buf[have:])
+        if err != nil {
+            return err
+        }
+
+        have += read
+    }
+
+    return
+}
+
 func (conn *connection) recvMessage(msg proto.Message) (err error) {
     if conn.tcp_conn == nil {
         return errors.New("recvMessage(): not connected")
@@ -97,7 +112,7 @@ func (conn *connection) recvMessage(msg proto.Message) (err error) {
         return
     }
 
-    _, err = conn.tcp_conn.Read(msgbuf)
+    err = conn.read(msgbuf)
     if err != nil {
         debugf("conn.recvMessage(): read msg error: %v", err)
         return
@@ -116,6 +131,7 @@ func (conn *connection) recvMessage(msg proto.Message) (err error) {
 
     err = proto.Unmarshal(msgbuf, msg)
     if err != nil {
+        debugf("conn.recvMessage(): Can't unmarshal proto message: %v", err)
         return
     }
 
