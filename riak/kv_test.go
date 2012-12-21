@@ -5,8 +5,12 @@ import (
     "bytes"
 )
 
+func setupClient(t *testing.T) *Client {
+    return New("127.0.0.1:8087")
+}
+
 func TestGetUnknownKey(t *testing.T) {
-    client := New("127.0.0.1:8087")
+    client := setupClient(t)
     bucket := client.Bucket("bname")
 
     _, err := bucket.Get("unknown_key")
@@ -20,7 +24,7 @@ func TestGetUnknownKey(t *testing.T) {
 }
 
 func TestPutGetKey(t *testing.T) {
-    client := New("127.0.0.1:8081")
+    client := setupClient(t)
     bucket := client.Bucket("bname")
 
     obj, err := bucket.New("new_key")
