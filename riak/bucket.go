@@ -33,3 +33,10 @@ func (bucket *Bucket) Exists(key string) (exists bool, err error) {
 
     return
 }
+
+// Delete object
+func (bucket *Bucket) Delete(key string) (err error) {
+    object := &Object{bucket: bucket, Key: key}
+    err = object.delete()
+    return
+}

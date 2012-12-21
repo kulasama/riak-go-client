@@ -23,7 +23,7 @@ func TestGetUnknownKey(t *testing.T) {
     }
 }
 
-func TestPutGetKey(t *testing.T) {
+func TestPutGetDeleteKey(t *testing.T) {
     client := setupClient(t)
     bucket := client.Bucket("bname")
 
@@ -49,6 +49,16 @@ func TestPutGetKey(t *testing.T) {
 
     if obj.ContentType != obj2.ContentType {
         t.Fatalf("Expected equal ContentType")   
+    }
+
+    err = bucket.Delete("new_key")
+    if err != nil {
+        t.Fatalf("Unexpected error: %v", err)
+    }
+
+    _, err = bucket.Get("new_key")
+    if err == nil || err != NotFound {
+        t.Fatalf("Expected NotFound error, actually: %v", err)
     }
 }
 

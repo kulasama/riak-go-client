@@ -79,3 +79,23 @@ func (obj *Object) get() (err error) {
 
     return
 }
+
+func (obj *Object) delete() (err error) {
+    bucket := obj.bucket
+    client := bucket.client
+    req := &riak_pb.RpbDelReq{Bucket: []byte(bucket.Name), Key: []byte(obj.Key), Vclock: obj.vclock}
+
+    conn := client.getConnection()
+    defer client.releaseConnection(conn)
+
+    if err = conn.sendMessage("RpbDelReq", req); err != nil {
+        return
+    }
+
+    err = conn.recvMessage(nil)
+    if err != nil {
+        return
+    }
+
+    return
+}
