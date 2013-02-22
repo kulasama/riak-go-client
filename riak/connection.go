@@ -13,7 +13,7 @@ import (
 )
 
 import (
-    "github.com/ivaxer/riak-go-client/riak_pb"
+    "github.com/kulasama/riak-go-client/riak_pb"
 )
 
 type connection struct {

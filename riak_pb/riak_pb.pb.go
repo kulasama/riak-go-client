@@ -4,7 +4,7 @@
 
 package riak_pb
 
-import proto "code.google.com/p/goprotobuf/proto"
+import proto "github.com/kulasama/goprotobuf/proto"
 import json "encoding/json"
 import math "math"
 
