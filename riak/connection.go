@@ -9,7 +9,7 @@ import (
 )
 
 import (
-    "code.google.com/p/goprotobuf/proto"
+    "github.com/kulasama/goprotobuf/proto"
 )
 
 import (
